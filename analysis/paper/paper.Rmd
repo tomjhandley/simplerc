@@ -1,0 +1,101 @@
+---
+title: "Introduction to random walks"
+author:
+  - Randomwalk Enthusiast:
+      email: random@walk.edu
+      institute: [UofRW]
+      correspondence: true
+institute:
+  - UofRW: University of Random Walks
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+    bookdown::word_document2:
+      fig_caption: yes
+      reference_docx: "../templates/template.docx" # Insert path for the DOCX file
+      pandoc_args:
+      - --lua-filter=../templates/scholarly-metadata.lua
+      - --lua-filter=../templates/author-info-blocks.lua
+      - --lua-filter=../templates/pagebreak.lua
+bibliography: references.bib
+csl: "../templates/journal-of-archaeological-science.csl" # Insert path for the bib-style
+abstract: |
+  Random walks - aren't they great? Useful for everything from modeling animal movement behavior to predicting stock markets. Well, at least for providing a null model.
+keywords: |
+  random; walks
+---
+
+Keywords: `r rmarkdown::metadata$keywords`
+
+<!-- The following code chunk defines some general settings how code chunks should behave. -->
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  comment = "#>",
+  fig.path = "../figures/",
+  dpi = 300
+)
+library(simplerc)
+```
+
+# Introduction
+
+The random walk is a useful statistical tool. Here we show how to simulate, plot, and fit random walks.
+
+# Methods
+
+## Simulation
+
+We simulate a Gaussian random walk by taking the cumulative sum of random normal numbers.
+
+## Visualization
+
+Random walks are best visualized as a line plot.
+
+## Fitting
+
+Given a sequence of positions, the step lengths of the sequence is the difference between positions. The parameters of the Gaussian random walk ($\mu$ and $\sigma$) are the mean and standard deviation of the step lengths, respectively.
+
+# Results
+
+Figure \@ref(fig:fig1) shows a simulated random walk with $\mu$ = 0.1 and $\sigma$ = 2 over 100 time steps.
+
+```{r fig1, fig.cap="A random walk"}
+t <- 100
+mu <- 0.5
+sigma <- 2
+
+walk <- simulate_walk(t, mu, sigma)
+plot_walk(walk)
+```
+
+```{r fit}
+params <- fit_walk(walk)
+```
+
+The fitted walk estimated parameters of $\mu$ = `r params$mu` and $\sigma$ = `r params$sigma`.
+
+# Conclusion
+
+Gee aren't random walks swell.
+
+\newpage
+
+### Colophon
+
+This report was generated on `r Sys.time()` using the following computational environment and dependencies:
+
+```{r colophon, cache = FALSE}
+# which R packages and versions?
+if ("devtools" %in% installed.packages()) devtools::session_info()
+```
+
+The current Git commit details are:
+
+```{r}
+# what commit is this file at? 
+if ("git2r" %in% installed.packages() & git2r::in_repository(path = ".")) git2r::repository(here::here())  
+```
